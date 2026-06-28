@@ -48,6 +48,7 @@ function startGame() {
   updatePointsDisplay();
   updateTimerDisplay();
   clearAchievementMessage();
+  startButton.textContent = 'Start Game';
   createGrid(); // Set up the game grid
   spawnInterval = setInterval(spawnWaterCan, 1000); // Spawn water cans every second
 
@@ -68,20 +69,22 @@ function endGame() {
   gameActive = false; // Mark the game as inactive
   clearInterval(spawnInterval); // Stop spawning water cans
   clearInterval(timerInterval); // Stop the countdown timer
+  startButton.textContent = 'Reset?';
 }
 
 // Set up click handler for the start button
-document.getElementById('start-game').addEventListener('click', startGame);
+const startButton = document.getElementById('start-game');
+startButton.addEventListener('click', startGame);
 
 function updatePointsDisplay() {
-  const scoreDisplay = document.getElementById('current-cans');
+const scoreDisplay = document.getElementById('current-cans');
   if (scoreDisplay) {
     scoreDisplay.textContent = currentCans;
   }
 }
 
 function updateTimerDisplay() {
-  const timerDisplay = document.getElementById('timer');
+const timerDisplay = document.getElementById('timer');
   if (timerDisplay) {
     timerDisplay.textContent = timeLeft;
   }
@@ -103,6 +106,13 @@ function showEndMessage() {
 const achievementDisplay = document.getElementById('achievements');
   if (achievementDisplay && currentCans > GOAL_CANS) {
     achievementDisplay.textContent = 'Congratulations! You win!';
+    if (typeof confetti === 'function') {
+      confetti({
+        particleCount: 120,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
   }
 }
 
